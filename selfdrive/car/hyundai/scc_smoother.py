@@ -282,7 +282,7 @@ class SccSmoother:
     else:
 
       d = lead.dRel - 5.
-
+      # Tuned by stonerains
       if 0. < d < -lead.vRel * (7.687 + cruise_gap) * 2. and lead.vRel < -1.:
         t = d / lead.vRel * 0.978
         acc = -(lead.vRel / t) * CV.MS_TO_KPH * 1.8
