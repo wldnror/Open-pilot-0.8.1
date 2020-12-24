@@ -79,17 +79,17 @@ static void ui_draw_text(NVGcontext *vg, float x, float y, const char* string, f
   nvgFillColor(vg, color);
   nvgText(vg, x, y, string, NULL);
 }
-// 차선폭 관련 시작
-//static void ui_print(UIState *s, int x, int y,  const char* fmt, ... )
-//{
-//  char* msg_buf = NULL;
-//  va_list args;
-//  va_start(args, fmt);
-//  vasprintf( &msg_buf, fmt, args);
-//  va_end(args);
-//  nvgText(s->vg, x, y, msg_buf, NULL);
+/* 차선폭 관련 시작
+static void ui_print(UIState *s, int x, int y,  const char* fmt, ... )
+{
+  char* msg_buf = NULL;
+  va_list args;
+  va_start(args, fmt);
+  vasprintf( &msg_buf, fmt, args);
+  va_end(args);
+  nvgText(s->vg, x, y, msg_buf, NULL);
 }
-//차선폭 관련 종료
+차선폭 관련 종료*/
 static void draw_chevron(UIState *s, float x_in, float y_in, float sz,
                           NVGcolor fillColor, NVGcolor glowColor) {
   float x, y;
