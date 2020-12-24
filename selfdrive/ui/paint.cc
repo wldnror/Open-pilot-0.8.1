@@ -640,7 +640,7 @@ static void ui_draw_tpms(UIState *s) {
   char tpmsRl[32];
   char tpmsRr[32];
   const int viz_x_gain = 0;
-  const int viz_y_gain = 25;
+  const int viz_y_gain = 23;
   int viz_tpms_w = 250;
   int viz_tpms_h = 160;
   int viz_tpms_x = s->scene.viz_rect.x + viz_x_gain + s->scene.viz_rect.w - 510;
