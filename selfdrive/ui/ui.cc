@@ -122,8 +122,8 @@ void update_sockets(UIState *s) {
   if (s->started && sm.updated("controlsState")) {
     auto event = sm["controlsState"];
     scene.controls_state = event.getControlsState();
-// Ä¿ºê UI »ç¿ë½Ã ¾Æ·¡ ÁÖ¼® Ç®¾î¾ß ÇÔ    
-//    s->scene.curvature = scene.controls_state.getCurvature();
+  
+    s->scene.curvature = scene.controls_state.getCurvature();
 
     // TODO: the alert stuff shouldn't be handled here
     auto alert_sound = scene.controls_state.getAlertSound();
@@ -184,7 +184,7 @@ void update_sockets(UIState *s) {
    if (sm.updated("pathPlan"))
    {
     scene.path_plan = sm["pathPlan"].getPathPlan();
-	// Ä¿ºê UI »ç¿ë½Ã ¾Æ·¡ ÁÖ¼® Ç®¾î¾ß ÇÔ
+	// ì»¤ë¸Œ UI ì‚¬ìš©ì‹œ ì•„ë˜ ì£¼ì„ í’€ì–´ì•¼ í•¨
 //    auto data = sm["pathPlan"].getPathPlan();
 
 //    scene.pathPlan.laneWidth = data.getLaneWidth();
