@@ -194,6 +194,23 @@ class CarState(CarStateBase):
                     CAR.SONATA_HEV, CAR.SANTA_FE, CAR.KONA_EV, CAR.NIRO_EV, CAR.KONA]:
       self.lkas_button_on = bool(cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"])
 
+    #TPMS
+    if cp.vl["TPMS11"]['PRESSURE_FL'] > 43:
+      ret.tpmsPressureFl = cp.vl["TPMS11"]['PRESSURE_FL'] * 5 * 0.145
+    else:
+      ret.tpmsPressureFl = cp.vl["TPMS11"]['PRESSURE_FL']
+    if cp.vl["TPMS11"]['PRESSURE_FR'] > 43:
+      ret.tpmsPressureFr = cp.vl["TPMS11"]['PRESSURE_FR'] * 5 * 0.145
+    else:
+      ret.tpmsPressureFr = cp.vl["TPMS11"]['PRESSURE_FR']
+    if cp.vl["TPMS11"]['PRESSURE_RL'] > 43:
+      ret.tpmsPressureRl = cp.vl["TPMS11"]['PRESSURE_RL'] * 5 * 0.145
+    else:
+      ret.tpmsPressureRl = cp.vl["TPMS11"]['PRESSURE_RL']
+    if cp.vl["TPMS11"]['PRESSURE_RR'] > 43:
+      ret.tpmsPressureRr = cp.vl["TPMS11"]['PRESSURE_RR'] * 5 * 0.145
+    else:
+      ret.tpmsPressureRr = cp.vl["TPMS11"]['PRESSURE_RR']
 
     # scc smoother
     driver_override = cp.vl["TCS13"]["DriverOverride"]
@@ -217,6 +234,11 @@ class CarState(CarStateBase):
       ("WHL_SPD_FR", "WHL_SPD11", 0),
       ("WHL_SPD_RL", "WHL_SPD11", 0),
       ("WHL_SPD_RR", "WHL_SPD11", 0),
+
+      ("PRESSURE_FL", "TPMS11", 0),         # tpms
+      ("PRESSURE_FR", "TPMS11", 0),
+      ("PRESSURE_RL", "TPMS11", 0),
+      ("PRESSURE_RR", "TPMS11", 0),
 
       ("YAW_RATE", "ESP12", 0),
 
@@ -253,6 +275,17 @@ class CarState(CarStateBase):
       ("CF_VSM_Avail", "TCS13", 0),
 
       ("ESC_Off_Step", "TCS15", 0),
+
+      ("AVH_STAT", "ESP11", 0),  # 테네시 추가
+      ("Lvr12_00", "LVR12", 0), # 테네시 추가
+      ("Lvr12_01", "LVR12", 0), # 테네시 추가
+      ("Lvr12_02", "LVR12", 0), # 테네시 추가
+      ("Lvr12_03", "LVR12", 0), # 테네시 추가
+      ("Lvr12_04", "LVR12", 0), # 테네시 추가
+      ("Lvr12_05", "LVR12", 0), # 테네시 추가
+      ("Lvr12_06", "LVR12", 0), # 테네시 추가
+      ("Lvr12_07", "LVR12", 0), # 테네시 추가
+      ("CF_Lvr_CGear", "LVR11", 0), # 테네시 추가
 
       ("CF_Lvr_GearInf", "LVR11", 0),        # Transmission Gear (0 = N or P, 1-8 = Fwd, 14 = Rev)
 
@@ -310,19 +343,19 @@ class CarState(CarStateBase):
     ]
 
     checks = [
-      # address, frequency
-      ("TCS13", 50),
-      ("TCS15", 10),
-      ("CLU11", 50),
-      ("ESP12", 100),
-      ("CGW1", 10),
-      ("CGW4", 5),
-      ("WHL_SPD11", 50),
+      # address, frequency DBC정의된 것에 의한 작동
+      ("TCS13", 40),  # 0d916 0x394
+      ("TCS15", 10),  # 0d1287 0x507
+      ("CLU11", 40),  # 0d1265 0x4F1
+      ("ESP12", 100),  # 0d544 0x220
+      ("CGW1", 10),  # 0d1345 0x541
+      ("CGW4", 5),  # 0d1369 0x559
+      ("WHL_SPD11", 40),  # 0d902 0x389
     ]
     if CP.sccBus == 0 and CP.enableCruise:
       checks += [
-        ("SCC11", 50),
-        ("SCC12", 50),
+        ("SCC11", 40),
+        ("SCC12", 40),
       ]
     if CP.mdpsBus == 0:
       signals += [
@@ -339,7 +372,7 @@ class CarState(CarStateBase):
         ("CR_Mdps_OutTq", "MDPS12", 0)
       ]
       checks += [
-        ("MDPS12", 50)
+        ("MDPS12", 40) # GDS 장비의 점검에서 점검시간에서 작동시 40ms시간으로 검사한다를 참조함..
       ]
     if CP.sasBus == 0:
       signals += [
@@ -516,8 +549,8 @@ class CarState(CarStateBase):
         ("ComfortBandLower", "SCC14", 0),
       ]
       checks += [
-        ("SCC11", 50),
-        ("SCC12", 50),
+        ("SCC11", 40),
+        ("SCC12", 40),
       ]
     return CANParser(DBC[CP.carFingerprint]['pt'], signals, checks, 1)
 
@@ -599,8 +632,8 @@ class CarState(CarStateBase):
         ("ComfortBandLower", "SCC14", 0),
       ]
       checks += [
-        ("SCC11", 50),
-        ("SCC12", 50),
+        ("SCC11", 40),
+        ("SCC12", 40),
       ]
 
     return CANParser(DBC[CP.carFingerprint]['pt'], signals, checks, 2)
