@@ -371,7 +371,9 @@ struct CarControl {
       chimeWarningRepeat @6;
       chimePrompt @7;
       chimeWarning2Repeat @8;
-      chimeAutohold @9;
+      chimeSlowingDownSpeed @9;
+      chimeAutohold @10;
+      
     }
   }
 }
