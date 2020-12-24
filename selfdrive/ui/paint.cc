@@ -639,10 +639,11 @@ static void ui_draw_tpms(UIState *s) {
   char tpmsFr[32];
   char tpmsRl[32];
   char tpmsRr[32];
+  const int viz_x_gain = 0;
   const int viz_y_gain = 30;
   int viz_tpms_w = 250;
   int viz_tpms_h = 160;
-  int viz_tpms_x = s->scene.viz_rect.x + s->scene.viz_rect.w - 510;
+  int viz_tpms_x = s->scene.viz_rect.x + viz_x_gain + s->scene.viz_rect.w - 510;
   int viz_tpms_y = s->scene.viz_rect.y + viz_y_gain + (bdr_s*1.5);
   float maxv = 0;
   float minv = 300;
