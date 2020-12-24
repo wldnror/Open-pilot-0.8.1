@@ -122,7 +122,7 @@ void update_sockets(UIState *s) {
   if (s->started && sm.updated("controlsState")) {
     auto event = sm["controlsState"];
     scene.controls_state = event.getControlsState();
-  
+   
     s->scene.curvature = scene.controls_state.getCurvature();
 
     // TODO: the alert stuff shouldn't be handled here

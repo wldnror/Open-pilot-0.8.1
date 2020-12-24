@@ -1022,11 +1022,13 @@ static void ui_draw_driver_view(UIState *s) {
 static void ui_draw_vision_brake(UIState *s) {
   const UIScene *scene = &s->scene;
   const int brake_size = 96;
-  const int brake_x = (s->scene.viz_rect.x + (brake_size * 4) + (bdr_is * 4));
-  const int brake_y = (s->scene.viz_rect.bottom() - footer_h + ((footer_h - brake_size) / 2));
+  const int viz_x_gain = 60;
+  const int viz_y_gain = 0;
+  const int brake_x = (s->scene.viz_rect.x + (brake_size * 4) + (bdr_is * 4) - viz_x_gain);
+  const int brake_y = (s->scene.viz_rect.bottom() - footer_h + ((footer_h - brake_size) / 2) - viz_y_gain);
   const int brake_img_size = (brake_size * 1.5);
-  const int brake_img_x = (brake_x - (brake_img_size / 2));
-  const int brake_img_y = (brake_y - (brake_size / 4));
+  const int brake_img_x = (brake_x - (brake_img_size / 2) - viz_x_gain);
+  const int brake_img_y = (brake_y - (brake_size / 4) - viz_y_gain);
 
   bool brake_valid = scene->car_state.getBrakeLights();
   float brake_img_alpha = brake_valid ? 1.0f : 0.15f;
@@ -1067,7 +1069,7 @@ static void ui_draw_vision_footer(UIState *s) {
   ui_draw_vision_face(s);
 
 #if UI_FEATURE_BRAKE
-//  ui_draw_vision_brake(s); //적용 시 브레이크 이미지랑 간섭 이줄 주석처리 해야함
+  ui_draw_vision_brake(s);
 #endif
 }
 
