@@ -122,6 +122,8 @@ void update_sockets(UIState *s) {
   if (s->started && sm.updated("controlsState")) {
     auto event = sm["controlsState"];
     scene.controls_state = event.getControlsState();
+// 커브 UI 사용시 아래 주석 풀어야 함    
+//    s->scene.curvature = scene.controls_state.getCurvature();
 
     // TODO: the alert stuff shouldn't be handled here
     auto alert_sound = scene.controls_state.getAlertSound();
@@ -182,6 +184,19 @@ void update_sockets(UIState *s) {
    if (sm.updated("pathPlan"))
    {
     scene.path_plan = sm["pathPlan"].getPathPlan();
+	// 커브 UI 사용시 아래 주석 풀어야 함
+//    auto data = sm["pathPlan"].getPathPlan();
+
+//    scene.pathPlan.laneWidth = data.getLaneWidth();
+//    scene.pathPlan.cProb = data.getCProb();
+//    scene.pathPlan.lProb = data.getLProb();
+//    scene.pathPlan.rProb = data.getRProb();
+
+//    auto l_list = data.getLPoly();
+//    auto r_list = data.getRPoly();
+
+//    scene.pathPlan.lPoly = l_list[3];
+//    scene.pathPlan.rPoly = r_list[3];
    }
 
    if (sm.updated("gpsLocationExternal"))

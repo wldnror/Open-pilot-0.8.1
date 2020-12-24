@@ -79,7 +79,17 @@ static void ui_draw_text(NVGcontext *vg, float x, float y, const char* string, f
   nvgFillColor(vg, color);
   nvgText(vg, x, y, string, NULL);
 }
-
+// 차선폭 관련 시작
+//static void ui_print(UIState *s, int x, int y,  const char* fmt, ... )
+//{
+//  char* msg_buf = NULL;
+//  va_list args;
+//  va_start(args, fmt);
+//  vasprintf( &msg_buf, fmt, args);
+//  va_end(args);
+//  nvgText(s->vg, x, y, msg_buf, NULL);
+}
+//차선폭 관련 종료
 static void draw_chevron(UIState *s, float x_in, float y_in, float sz,
                           NVGcolor fillColor, NVGcolor glowColor) {
   float x, y;
@@ -721,31 +731,31 @@ static void ui_draw_tpms(UIState *s) {
     ui_draw_text(s->vg, pos_x+55 + viz_x_gain, 220 + viz_y_gain, tpmsRr, 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
   }
 }
+/*차선폭 관련 시작
+static void ui_draw_debug(UIState *s) 
+{
+  UIScene &scene = s->scene;
 
-//static void ui_draw_debug(UIState *s) 
-//{
-//  UIScene &scene = s->scene;
-//
-//  int ui_viz_rx = scene.viz_rect.x + 300;
-//  int ui_viz_ry = 108;
-//  int ui_viz_rx_center = scene.viz_rect.centerX();
+  int ui_viz_rx = scene.viz_rect.x + 300;
+  int ui_viz_ry = 108;
+  int ui_viz_rx_center = scene.viz_rect.centerX();
 
-//  nvgFontSize(s->vg, 60);
-//  nvgFontFace(s->vg, "sans-semibold");
-//  nvgFillColor(s->vg, COLOR_WHITE_ALPHA(150));
-//  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
-// ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "커브");
-//  if (scene.curvature >= 0.001) {
-//    ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "↖%.4f　", abs(scene.curvature));
-//  } else if (scene.curvature <= -0.001) {
-//    ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "　%.4f↗", abs(scene.curvature));
-//  } else {
-//    ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "　%.4f　", abs(scene.curvature));
-//  }
-//  ui_print(s, ui_viz_rx_center, ui_viz_ry+750, " 좌측간격(m)       차선폭(m)       우측간격(m)");
-//  ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%.2f                       %.2f                       %.2f", scene.pathPlan.lPoly, scene.pathPlan.laneWidth, abs(scene.pathPlan.rPoly));
-//}
-
+  nvgFontSize(s->vg, 60);
+  nvgFontFace(s->vg, "sans-semibold");
+  nvgFillColor(s->vg, COLOR_WHITE_ALPHA(150));
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+ ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "커브");
+  if (scene.curvature >= 0.001) {
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "↖%.4f　", abs(scene.curvature));
+  } else if (scene.curvature <= -0.001) {
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "　%.4f↗", abs(scene.curvature));
+  } else {
+    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "　%.4f　", abs(scene.curvature));
+  }
+  ui_print(s, ui_viz_rx_center, ui_viz_ry+800, " 좌측간격(m)       차선폭(m)       우측간격(m)");
+  ui_print(s, ui_viz_rx_center, ui_viz_ry+850, "%.2f                       %.2f                       %.2f", scene.pathPlan.lPoly, scene.pathPlan.laneWidth, abs(scene.pathPlan.rPoly));
+}
+차선폭 관련 종료*/
 static void bb_ui_draw_debug(UIState *s)
 {
     const UIScene *scene = &s->scene;
@@ -1057,7 +1067,7 @@ static void ui_draw_vision_footer(UIState *s) {
   ui_draw_vision_face(s);
 
 #if UI_FEATURE_BRAKE
-  ui_draw_vision_brake(s);
+  ui_draw_vision_brake(s); //적용 시 브레이크 이미지랑 간섭 이줄 주석처리 해야함
 #endif
 }
 
