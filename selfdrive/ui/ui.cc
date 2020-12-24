@@ -184,19 +184,19 @@ void update_sockets(UIState *s) {
    if (sm.updated("pathPlan"))
    {
     scene.path_plan = sm["pathPlan"].getPathPlan();
-	// 커브 UI 사용시 아래 주석 풀어야 함
-//    auto data = sm["pathPlan"].getPathPlan();
 
-//    scene.pathPlan.laneWidth = data.getLaneWidth();
-//    scene.pathPlan.cProb = data.getCProb();
-//    scene.pathPlan.lProb = data.getLProb();
-//    scene.pathPlan.rProb = data.getRProb();
+    auto data = sm["pathPlan"].getPathPlan();
 
-//    auto l_list = data.getLPoly();
-//    auto r_list = data.getRPoly();
+    scene.pathPlan.laneWidth = data.getLaneWidth();
+    scene.pathPlan.cProb = data.getCProb();
+    scene.pathPlan.lProb = data.getLProb();
+    scene.pathPlan.rProb = data.getRProb();
 
-//    scene.pathPlan.lPoly = l_list[3];
-//    scene.pathPlan.rPoly = r_list[3];
+    auto l_list = data.getLPoly();
+    auto r_list = data.getRPoly();
+
+    scene.pathPlan.lPoly = l_list[3];
+    scene.pathPlan.rPoly = r_list[3];
    }
 
    if (sm.updated("gpsLocationExternal"))
