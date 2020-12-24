@@ -1067,7 +1067,7 @@ static void ui_draw_vision_footer(UIState *s) {
   ui_draw_vision_face(s);
 
 #if UI_FEATURE_BRAKE
-  ui_draw_vision_brake(s); //적용 시 브레이크 이미지랑 간섭 이줄 주석처리 해야함
+//  ui_draw_vision_brake(s); //적용 시 브레이크 이미지랑 간섭 이줄 주석처리 해야함
 #endif
 }
 

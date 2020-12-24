@@ -165,8 +165,8 @@ typedef struct UIScene {
   float max_distance;
   float lane_line_probs[4];
   float road_edge_stds[2];
-//커브 UI 사용시 주석 풀어야 함  
-//  float curvature;
+ 
+  float curvature;
 
   //tpms
   float tpmsPressureFl;
@@ -183,17 +183,17 @@ typedef struct UIScene {
   float gpsAltitude;
 
   bool recording;
-//커브 UI 사용시 주석 풀어야 함
-//  struct _PathPlan
-//  {
-//    float laneWidth;    
-//    float cProb;
-//    float lProb;
-//    float rProb;
+
+  struct _PathPlan
+  {
+    float laneWidth;    
+    float cProb;
+    float lProb;
+    float rProb;
     
-//    float lPoly;
-//    float rPoly;
-//  } pathPlan;
+    float lPoly;
+    float rPoly;
+  } pathPlan;
 } UIScene;
 
 typedef struct {
