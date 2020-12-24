@@ -1038,12 +1038,12 @@ static void ui_draw_vision_brake(UIState *s) {
     brake_img_size, brake_img_size, 0, s->img_brake, brake_img_alpha);
 
   nvgBeginPath(s->vg);
-  nvgCircle(s->vg, brake_x, (brake_y + (bdr_is * 1.5)), brake_size);
+  nvgCircle(s->vg, brake_x - viz_x_gain, (brake_y + (bdr_is * 1.5) - viz_y_gain), brake_size);
   nvgFillColor(s->vg, brake_bg);
   nvgFill(s->vg);
 
   nvgBeginPath(s->vg);
-  nvgRect(s->vg, brake_img_x, brake_img_y, brake_img_size, brake_img_size);
+  nvgRect(s->vg, brake_img_x - viz_x_gain, brake_img_y - viz_y_gain, brake_img_size, brake_img_size);
   nvgFillPaint(s->vg, brake_img);
   nvgFill(s->vg);
 }
