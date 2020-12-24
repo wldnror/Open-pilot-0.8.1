@@ -79,7 +79,7 @@ static void ui_draw_text(NVGcontext *vg, float x, float y, const char* string, f
   nvgFillColor(vg, color);
   nvgText(vg, x, y, string, NULL);
 }
-/* 차선폭 관련 시작
+
 static void ui_print(UIState *s, int x, int y,  const char* fmt, ... )
 {
   char* msg_buf = NULL;
@@ -89,7 +89,7 @@ static void ui_print(UIState *s, int x, int y,  const char* fmt, ... )
   va_end(args);
   nvgText(s->vg, x, y, msg_buf, NULL);
 }
-차선폭 관련 종료*/
+
 static void draw_chevron(UIState *s, float x_in, float y_in, float sz,
                           NVGcolor fillColor, NVGcolor glowColor) {
   float x, y;
@@ -731,7 +731,7 @@ static void ui_draw_tpms(UIState *s) {
     ui_draw_text(s->vg, pos_x+55 + viz_x_gain, 220 + viz_y_gain, tpmsRr, 60, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
   }
 }
-/*차선폭 관련 시작
+
 static void ui_draw_debug(UIState *s) 
 {
   UIScene &scene = s->scene;
@@ -755,7 +755,7 @@ static void ui_draw_debug(UIState *s)
   ui_print(s, ui_viz_rx_center, ui_viz_ry+800, " 좌측간격(m)       차선폭(m)       우측간격(m)");
   ui_print(s, ui_viz_rx_center, ui_viz_ry+850, "%.2f                       %.2f                       %.2f", scene.pathPlan.lPoly, scene.pathPlan.laneWidth, abs(scene.pathPlan.rPoly));
 }
-차선폭 관련 종료*/
+
 static void bb_ui_draw_debug(UIState *s)
 {
     const UIScene *scene = &s->scene;
