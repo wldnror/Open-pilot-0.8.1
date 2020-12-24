@@ -131,7 +131,7 @@ class PathPlanner():
     elif sm['carState'].rightBlinker:
       self.lane_change_direction = LaneChangeDirection.right
 
-    if (not active) or (self.lane_change_timer > LANE_CHANGE_TIME_MAX) or (not one_blinker) or (not self.lane_change_enabled):
+    if (not active) or (self.lane_change_timer > LANE_CHANGE_TIME_MAX) or (not self.lane_change_enabled):
       self.lane_change_state = LaneChangeState.off
       self.lane_change_direction = LaneChangeDirection.none
     else:
@@ -139,7 +139,7 @@ class PathPlanner():
                        ((sm['carState'].steeringTorque > 0 and self.lane_change_direction == LaneChangeDirection.left) or
                         (sm['carState'].steeringTorque < 0 and self.lane_change_direction == LaneChangeDirection.right)) or \
                         self.auto_lane_change_enabled and \
-                       (AUTO_LCA_START_TIME+1.0) > self.auto_lane_change_timer > AUTO_LCA_START_TIME
+                       (AUTO_LCA_START_TIME+0.5) > self.auto_lane_change_timer > AUTO_LCA_START_TIME
 
       blindspot_detected = ((sm['carState'].leftBlindspot and self.lane_change_direction == LaneChangeDirection.left) or
                             (sm['carState'].rightBlindspot and self.lane_change_direction == LaneChangeDirection.right))
@@ -163,13 +163,13 @@ class PathPlanner():
         elif not torque_applied and self.auto_lane_change_timer == 10.0 and not self.prev_torque_applied:
           self.prev_torque_applied = True       
 
-#      # starting
-#      elif self.lane_change_state == LaneChangeState.laneChangeStarting:
-#        # fade out over .5s
-#        self.lane_change_ll_prob = max(self.lane_change_ll_prob - 2*DT_MDL, 0.0)
-#        # 98% certainty
-#        if lane_change_prob < 0.02 and self.lane_change_ll_prob < 0.01:
-#          self.lane_change_state = LaneChangeState.laneChangeFinishing
+      # starting
+      elif self.lane_change_state == LaneChangeState.laneChangeStarting:
+        # fade out over .5s
+        self.lane_change_ll_prob = max(self.lane_change_ll_prob - 2*DT_MDL, 0.0)
+        # 98% certainty
+        if lane_change_prob < 0.02 and self.lane_change_ll_prob < 0.01:
+          self.lane_change_state = LaneChangeState.laneChangeFinishing
 
       # finishing
       elif self.lane_change_state == LaneChangeState.laneChangeFinishing:
@@ -188,7 +188,7 @@ class PathPlanner():
     if self.lane_change_state == LaneChangeState.off:
       self.auto_lane_change_timer = 0.0
       self.prev_torque_applied = False
-    elif self.auto_lane_change_timer < (AUTO_LCA_START_TIME+1.0): # stop afer 3 sec resume from 10 when torque applied
+    elif self.auto_lane_change_timer < (AUTO_LCA_START_TIME+0.5): # stop afer 3 sec resume from 10 when torque applied
       self.auto_lane_change_timer += DT_MDL
 
     self.prev_one_blinker = one_blinker
