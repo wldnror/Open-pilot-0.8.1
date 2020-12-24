@@ -735,7 +735,8 @@ static void ui_draw_tpms(UIState *s) {
 static void ui_draw_debug(UIState *s) 
 {
   UIScene &scene = s->scene;
-
+  const int x_gain = 60;
+  const int y_gain = 0;
   int ui_viz_rx = scene.viz_rect.x + 300;
   int ui_viz_ry = 108;
   int ui_viz_rx_center = scene.viz_rect.centerX();
@@ -744,25 +745,27 @@ static void ui_draw_debug(UIState *s)
   nvgFontFace(s->vg, "sans-semibold");
   nvgFillColor(s->vg, COLOR_WHITE_ALPHA(150));
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
- ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "커브");
+  ui_print(s, ui_viz_rx_center + x_gain, ui_viz_ry+700 + y_gain, "커브");
   if (scene.curvature >= 0.001) {
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "↖%.4f　", abs(scene.curvature));
+    ui_print(s, ui_viz_rx_center + x_gain, ui_viz_ry+750 + y_gain, "↖%.4f　", abs(scene.curvature));
   } else if (scene.curvature <= -0.001) {
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "　%.4f↗", abs(scene.curvature));
+    ui_print(s, ui_viz_rx_center + x_gain, ui_viz_ry+750 + y_gain, "　%.4f↗", abs(scene.curvature));
   } else {
-    ui_print(s, ui_viz_rx_center, ui_viz_ry+750, "　%.4f　", abs(scene.curvature));
+    ui_print(s, ui_viz_rx_center + x_gain, ui_viz_ry+750 + y_gain, "　%.4f　", abs(scene.curvature));
   }
-  ui_print(s, ui_viz_rx_center, ui_viz_ry+800, " 좌측간격(m)       차선폭(m)       우측간격(m)");
-  ui_print(s, ui_viz_rx_center, ui_viz_ry+850, "%.2f                       %.2f                       %.2f", scene.pathPlan.lPoly, scene.pathPlan.laneWidth, abs(scene.pathPlan.rPoly));
+  ui_print(s, ui_viz_rx_center + x_gain, ui_viz_ry+800 + y_gain, " 좌측간격(m)       차선폭(m)       우측간격(m)");
+  ui_print(s, ui_viz_rx_center + x_gain, ui_viz_ry+850 + y_gain, "%.2f                       %.2f                       %.2f", scene.pathPlan.lPoly, scene.pathPlan.laneWidth, abs(scene.pathPlan.rPoly));
 }
 
 static void bb_ui_draw_debug(UIState *s)
 {
     const UIScene *scene = &s->scene;
     char str[1024];
+    char strGear[32]; /*기어단수표시 by tenesi*/
 
     cereal::CarControl::SccSmoother::Reader scc_smoother = scene->car_control.getSccSmoother();
     std::string sccLogMessage = std::string(scc_smoother.getLogMessage());
+    snprintf(strGear, sizeof(strGear), "%.0f", s->scene.currentGear); /*기어단수표시 by tenesi*/
 
     snprintf(str, sizeof(str), "SR: %.2f, SRC: %.3f, SAD: %.3f%s%s", scene->path_plan.getSteerRatio(),
                                                         scene->path_plan.getSteerRateCost(),
@@ -778,6 +781,14 @@ static void bb_ui_draw_debug(UIState *s)
 
     ui_draw_text(s->vg, x, y, str, 20 * 2.5, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
 
+/*기어단수표시 by tenesi*/
+    if ((s->scene.currentGear < 9) && (s->scene.currentGear !=0)) {
+      ui_draw_text(s->vg, x+37, y-130., strGear, 25 * 10., COLOR_RED, s->font_sans_semibold);
+    } else if (s->scene.currentGear == 14 ) {
+      ui_draw_text(s->vg, x+37, y-130., "R", 25 * 10., COLOR_RED, s->font_sans_semibold);
+    } else {
+      ui_draw_text(s->vg, x+37, y-130., "", 25 * 10., COLOR_RED, s->font_sans_semibold);
+    }
     /*
 
     int w = 184;
@@ -835,8 +846,7 @@ static void bb_ui_draw_debug(UIState *s)
 }
 
 
-static void bb_ui_draw_UI(UIState *s)
-{
+static void bb_ui_draw_UI(UIState *s) {
   const UIScene *scene = &s->scene;
   const int bb_dml_w = 180;
   const int bb_dml_x = (scene->viz_rect.x + (bdr_is * 2));
@@ -922,6 +932,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 
 static void ui_draw_vision_speed(UIState *s) {
   const Rect &viz_rect = s->scene.viz_rect;
+  const UIScene *scene = &s->scene;
   float v_ego = s->scene.controls_state.getVEgo();
   float speed = v_ego * 2.2369363 + 0.5;
   if (s->is_metric){
@@ -931,12 +942,14 @@ static void ui_draw_vision_speed(UIState *s) {
   const int viz_speed_x = viz_rect.centerX() - viz_speed_w/2;
   char speed_str[32];
 
-  nvgBeginPath(s->vg);
-  nvgRect(s->vg, viz_speed_x, viz_rect.y, viz_speed_w, header_h);
+  NVGcolor val_color = COLOR_WHITE;
+
+  if( scene->brakePress ) val_color = COLOR_RED;
+  else if( scene->brakeLights ) val_color = nvgRGBA(201, 34, 49, 100);
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
 
   snprintf(speed_str, sizeof(speed_str), "%d", (int)speed);
-  ui_draw_text(s->vg, viz_rect.centerX(), 240, speed_str, 96*2.5, COLOR_WHITE, s->font_sans_bold);
+  ui_draw_text(s->vg, viz_rect.centerX(), 240, speed_str, 96*2.5, val_color, s->font_sans_bold);
   ui_draw_text(s->vg, viz_rect.centerX(), 320, s->is_metric?"km/h":"mph", 36*2.5, COLOR_WHITE_ALPHA(200), s->font_sans_regular);
 }
 
@@ -961,15 +974,19 @@ static void ui_draw_vision_event(UIState *s) {
 
 static void ui_draw_vision_face(UIState *s) {
   const int face_size = 96;
+  const int x_gain = 220;
+  const int y_gain = 0;
   const int face_x = (s->scene.viz_rect.x + face_size + (bdr_s * 2));
   const int face_y = (s->scene.viz_rect.bottom() - footer_h + ((footer_h - face_size) / 2));
-  ui_draw_circle_image(s->vg, face_x, face_y, face_size, s->img_face, s->scene.dmonitoring_state.getFaceDetected());
+  ui_draw_circle_image(s->vg, face_x + x_gain, face_y + y_gain, face_size, s->img_face, s->scene.dmonitoring_state.getFaceDetected());
 }
 
 static void ui_draw_driver_view(UIState *s) {
   const UIScene *scene = &s->scene;
   s->scene.uilayout_sidebarcollapsed = true;
   const Rect &viz_rect = s->scene.viz_rect;
+  const int x_gain = 220;
+  const int y_gain = 0;
   const int ff_xoffset = 32;
   const int frame_x = viz_rect.x;
   const int frame_w = viz_rect.w;
@@ -983,12 +1000,12 @@ static void ui_draw_driver_view(UIState *s) {
                                         box_y,
                                         scene->is_rhd ? (valid_frame_w - box_h / 2) : (valid_frame_x + box_h / 2), box_y,
                                         COLOR_BLACK, COLOR_BLACK_ALPHA(0));
-  ui_draw_rect(s->vg, scene->is_rhd ? valid_frame_x : (valid_frame_x + box_h / 2), box_y, valid_frame_w - box_h / 2, box_h, gradient);
-  ui_draw_rect(s->vg, scene->is_rhd ? valid_frame_x : valid_frame_x + box_h / 2, box_y, valid_frame_w - box_h / 2, box_h, COLOR_BLACK_ALPHA(144));
+  ui_draw_rect(s->vg, scene->is_rhd ? valid_frame_x : (valid_frame_x + box_h / 2) + x_gain, box_y + y_gain, valid_frame_w - box_h / 2, box_h, gradient);
+  ui_draw_rect(s->vg, scene->is_rhd ? valid_frame_x : valid_frame_x + box_h / 2 + x_gain, box_y + y_gain, valid_frame_w - box_h / 2, box_h, COLOR_BLACK_ALPHA(144));
 
   // borders
-  ui_draw_rect(s->vg, frame_x, box_y, valid_frame_x - frame_x, box_h, nvgRGBA(23, 51, 73, 255));
-  ui_draw_rect(s->vg, valid_frame_x + valid_frame_w, box_y, frame_w - valid_frame_w - (valid_frame_x - frame_x), box_h, nvgRGBA(23, 51, 73, 255));
+  ui_draw_rect(s->vg, frame_x + x_gain, box_y + y_gain, valid_frame_x - frame_x, box_h, nvgRGBA(23, 51, 73, 255));
+  ui_draw_rect(s->vg, valid_frame_x + valid_frame_w + x_gain, box_y + y_gain, frame_w - valid_frame_w - (valid_frame_x - frame_x), box_h, nvgRGBA(23, 51, 73, 255));
 
   // draw face box
   if (scene->dmonitoring_state.getFaceDetected()) {
@@ -1004,11 +1021,11 @@ static void ui_draw_driver_view(UIState *s) {
     }
 
     if (std::abs(face_x) <= 0.35 && std::abs(face_y) <= 0.4) {
-      ui_draw_rect(s->vg, fbox_x, fbox_y, 0.6 * box_h / 2, 0.6 * box_h / 2,
+      ui_draw_rect(s->vg, fbox_x + x_gain, fbox_y + y_gain, 0.6 * box_h / 2, 0.6 * box_h / 2,
                    nvgRGBAf(1.0, 1.0, 1.0, 0.8 - ((std::abs(face_x) > std::abs(face_y) ? std::abs(face_x) : std::abs(face_y))) * 0.6 / 0.375),
                    35, 10);
     } else {
-      ui_draw_rect(s->vg, fbox_x, fbox_y, 0.6 * box_h / 2, 0.6 * box_h / 2, nvgRGBAf(1.0, 1.0, 1.0, 0.2), 35, 10);
+      ui_draw_rect(s->vg, fbox_x + x_gain, fbox_y + y_gain, 0.6 * box_h / 2, 0.6 * box_h / 2, nvgRGBAf(1.0, 1.0, 1.0, 0.2), 35, 10);
     }
   }
 
@@ -1016,19 +1033,17 @@ static void ui_draw_driver_view(UIState *s) {
   const int face_size = 85;
   const int x = (valid_frame_x + face_size + (bdr_s * 2)) + (scene->is_rhd ? valid_frame_w - box_h / 2:0);
   const int y = (box_y + box_h - face_size - bdr_s - (bdr_s * 1.5));
-  ui_draw_circle_image(s->vg, x, y, face_size, s->img_face, scene->dmonitoring_state.getFaceDetected());
+  ui_draw_circle_image(s->vg, x + x_gain, y + y_gain, face_size, s->img_face, scene->dmonitoring_state.getFaceDetected());
 }
 
 static void ui_draw_vision_brake(UIState *s) {
   const UIScene *scene = &s->scene;
   const int brake_size = 96;
-  const int viz_x_gain = 60;
-  const int viz_y_gain = 0;
-  const int brake_x = (s->scene.viz_rect.x + (brake_size * 4) + (bdr_is * 4) - viz_x_gain);
-  const int brake_y = (s->scene.viz_rect.bottom() - footer_h + ((footer_h - brake_size) / 2) - viz_y_gain);
+  const int brake_x = (s->scene.viz_rect.x + (brake_size * 4) + (bdr_is * 4));
+  const int brake_y = (s->scene.viz_rect.bottom() - footer_h + ((footer_h - brake_size) / 2));
   const int brake_img_size = (brake_size * 1.5);
-  const int brake_img_x = (brake_x - (brake_img_size / 2) - viz_x_gain);
-  const int brake_img_y = (brake_y - (brake_size / 4) - viz_y_gain);
+  const int brake_img_x = (brake_x - (brake_img_size / 2));
+  const int brake_img_y = (brake_y - (brake_size / 4));
 
   bool brake_valid = scene->car_state.getBrakeLights();
   float brake_img_alpha = brake_valid ? 1.0f : 0.15f;
@@ -1038,12 +1053,12 @@ static void ui_draw_vision_brake(UIState *s) {
     brake_img_size, brake_img_size, 0, s->img_brake, brake_img_alpha);
 
   nvgBeginPath(s->vg);
-  nvgCircle(s->vg, brake_x - viz_x_gain, (brake_y + (bdr_is * 1.5) - viz_y_gain), brake_size);
+  nvgCircle(s->vg, brake_x, (brake_y + (bdr_is * 1.5)), brake_size);
   nvgFillColor(s->vg, brake_bg);
   nvgFill(s->vg);
 
   nvgBeginPath(s->vg);
-  nvgRect(s->vg, brake_img_x - viz_x_gain, brake_img_y - viz_y_gain, brake_img_size, brake_img_size);
+  nvgRect(s->vg, brake_img_x, brake_img_y, brake_img_size, brake_img_size);
   nvgFillPaint(s->vg, brake_img);
   nvgFill(s->vg);
 }
@@ -1070,7 +1085,7 @@ static void ui_draw_vision_footer(UIState *s) {
   ui_draw_debug(s);
 
 #if UI_FEATURE_BRAKE
-  ui_draw_vision_brake(s);
+  //ui_draw_vision_brake(s);
 #endif
 }
 

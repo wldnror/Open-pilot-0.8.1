@@ -300,6 +300,10 @@ class CarInterface(CarInterfaceBase):
         if b.type == ButtonType.decelCruise and not b.pressed:
           events.add(EventName.buttonEnable)
 
+
+    if self.CS.brakeHold:
+      events.add(EventName.brakeHold)
+      
     # scc smoother
     if self.CC.scc_smoother is not None:
       self.CC.scc_smoother.inject_events(events)

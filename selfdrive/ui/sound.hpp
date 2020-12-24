@@ -14,7 +14,7 @@ static std::map<AudibleAlert, std::pair<const char *, int>> sound_map {
   {AudibleAlert::CHIME_WARNING_REPEAT, {"../assets/sounds/warning_repeat.wav", -1}},
   {AudibleAlert::CHIME_ERROR, {"../assets/sounds/error.wav", 0}},
   {AudibleAlert::CHIME_PROMPT, {"../assets/sounds/error.wav", 0}},
-  {AudibleAlert::CHIME_SLOWING_DOWN_SPEED, {"../assets/sounds/slowing_down_speed.wav", 0}}
+  {AudibleAlert::CHIME_AUTOHOLD, {"../assets/sounds/autohold.wav", 0}},
 };
 
 class Sound {

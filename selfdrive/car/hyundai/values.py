@@ -515,11 +515,11 @@ FEATURES = {
 
 DBC = {
   # genesis
-  CAR.GENESIS: dbc_dict('hyundai_kia_generic', None),
+  CAR.GENESIS: dbc_dict('hyundai_genesis', None),
   CAR.GENESIS_G70: dbc_dict('hyundai_kia_generic', None),
-  CAR.GENESIS_G80: dbc_dict('hyundai_kia_generic', None),
-  CAR.GENESIS_G90: dbc_dict('hyundai_kia_generic', None),
-  CAR.GENESIS_G90_L: dbc_dict('hyundai_kia_generic', None),
+  CAR.GENESIS_G80: dbc_dict('hyundai_genesis', None),
+  CAR.GENESIS_G90: dbc_dict('hyundai_genesis', None),
+  CAR.GENESIS_G90_L: dbc_dict('hyundai_genesis', None),
   # hyundai
   CAR.ELANTRA: dbc_dict('hyundai_kia_generic', None),
   CAR.ELANTRA_GT_I30: dbc_dict('hyundai_kia_generic', None),
@@ -546,11 +546,11 @@ DBC = {
   CAR.K5_HEV: dbc_dict('hyundai_kia_generic', None),
   CAR.SPORTAGE: dbc_dict('hyundai_kia_generic', None),  
   CAR.SORENTO: dbc_dict('hyundai_kia_generic', None),
-  CAR.STINGER: dbc_dict('hyundai_kia_generic', None),  
+  CAR.STINGER: dbc_dict('hyundai_genesis', None),  
   CAR.NIRO_EV: dbc_dict('hyundai_kia_generic', None),
   CAR.NIRO_HEV: dbc_dict('hyundai_kia_generic', None),
   CAR.CEED: dbc_dict('hyundai_kia_generic', None),
-  CAR.K7: dbc_dict('hyundai_kia_generic', None),
+  CAR.K7: dbc_dict('hyundai_genesis', None),
   CAR.K7_HEV: dbc_dict('hyundai_kia_generic', None),
 }
 
