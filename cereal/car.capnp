@@ -363,6 +363,13 @@ struct CarControl {
       chimePrompt @7;
       chimeWarning2Repeat @8;
       chimeSlowingDownSpeed @9;
+      chimeGeard @10;
+      chimeAlca @11;
+      chimeSeatbelt @12;
+      chimeVision @13;
+      chimeDistracted @14;
+      chimeCalibration1 @15;
+      chimeCalibration2 @16;
     }
   }
 }
