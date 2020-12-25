@@ -96,7 +96,7 @@ class CarState(CarStateBase):
     ret.brake = 0
     ret.brakePressed = cp.vl["TCS13"]['DriverBraking'] != 0
 
-    if self.car_fingerprint in [CAR.GENESIS, CAR.GENESIS_G90, CAR.GENESIS_G90_L, CAR.K7]: # ÇöÀç ¿ÀÅä È¦µå¸¦ Ç¥½ÃÇÏ±â À§ÇÑ ÀÛ¾÷
+    if self.car_fingerprint in [CAR.GENESIS, CAR.PALISADE, CAR.GENESIS_G90, CAR.GENESIS_G90_L, CAR.K7]: # í˜„ì¬ ì˜¤í†  í™€ë“œë¥¼ í‘œì‹œí•˜ê¸° ìœ„í•œ ì‘ì—…
       self.brakeHold = (cp.vl["ESP11"]['AVH_STAT'] == 1) # Tenesi
     else:
       self.brakeHold = 0
@@ -111,13 +111,13 @@ class CarState(CarStateBase):
       ret.gas = cp.vl["EMS12"]['PV_AV_CAN'] / 100
       ret.gasPressed = bool(cp.vl["EMS16"]["CF_Ems_AclAct"])
     
-    if self.car_fingerprint in [CAR.GENESIS, CAR.GENESIS_G90, CAR.GENESIS_G90_L, CAR.K7]: # ÇöÀç ±â¾î ´Ü¼ö¸¦ Ç¥½ÃÇÏ±â À§ÇÑ ÀÛ¾÷
+    if self.car_fingerprint in [CAR.GENESIS, CAR.PALISADE, CAR.GENESIS_G90, CAR.GENESIS_G90_L, CAR.K7]: # í˜„ì¬ ê¸°ì–´ ë‹¨ìˆ˜ë¥¼ í‘œì‹œí•˜ê¸° ìœ„í•œ ì‘ì—…
       ret.currentGear = cp.vl["LVR11"]["CF_Lvr_CGear"]
 
-    #sys.stdout = open('/data/media/0/tenesilog.txt', 'a') #  È­ÀÏ¿¡ ÀúÀå½Ã ÇÊ¿ä
-    gear_disp2 = cp.vl["LVR11"] #["CF_Lvr_CGear"] # LVR11 µîÀÇ CAN ID¸¦ ±â¹İÀ¸·ÎÇÑ µ¥ÀÌÅÍ´Â ´ÙÀ½°ú °°°Ôµµ Ç¥½Ã°¡´ÉÇÏ´Ù..
+    #sys.stdout = open('/data/media/0/tenesilog.txt', 'a') #  í™”ì¼ì— ì €ì¥ì‹œ í•„ìš”
+    gear_disp2 = cp.vl["LVR11"] #["CF_Lvr_CGear"] # LVR11 ë“±ì˜ CAN IDë¥¼ ê¸°ë°˜ìœ¼ë¡œí•œ ë°ì´í„°ëŠ” ë‹¤ìŒê³¼ ê°™ê²Œë„ í‘œì‹œê°€ëŠ¥í•˜ë‹¤..
     print(gear_disp2)
-    gear_disp3 = cp.vl["ESP11"] #["CF_Lvr_CGear"] # LVR11 µîÀÇ CAN ID¸¦ ±â¹İÀ¸·ÎÇÑ µ¥ÀÌÅÍ´Â ´ÙÀ½°ú °°°Ôµµ Ç¥½Ã°¡´ÉÇÏ´Ù..
+    gear_disp3 = cp.vl["ESP11"] #["CF_Lvr_CGear"] # LVR11 ë“±ì˜ CAN IDë¥¼ ê¸°ë°˜ìœ¼ë¡œí•œ ë°ì´í„°ëŠ” ë‹¤ìŒê³¼ ê°™ê²Œë„ í‘œì‹œê°€ëŠ¥í•˜ë‹¤..
     print(gear_disp3)
 
     # TODO: refactor gear parsing in function
@@ -298,16 +298,16 @@ class CarState(CarStateBase):
 
       ("ESC_Off_Step", "TCS15", 0),
 
-      ("AVH_STAT", "ESP11", 0),  # Å×³×½Ã Ãß°¡
-      ("Lvr12_00", "LVR12", 0), # Å×³×½Ã Ãß°¡
-      ("Lvr12_01", "LVR12", 0), # Å×³×½Ã Ãß°¡
-      ("Lvr12_02", "LVR12", 0), # Å×³×½Ã Ãß°¡
-      ("Lvr12_03", "LVR12", 0), # Å×³×½Ã Ãß°¡
-      ("Lvr12_04", "LVR12", 0), # Å×³×½Ã Ãß°¡
-      ("Lvr12_05", "LVR12", 0), # Å×³×½Ã Ãß°¡
-      ("Lvr12_06", "LVR12", 0), # Å×³×½Ã Ãß°¡
-      ("Lvr12_07", "LVR12", 0), # Å×³×½Ã Ãß°¡
-      ("CF_Lvr_CGear", "LVR11", 0), # Å×³×½Ã Ãß°¡
+      ("AVH_STAT", "ESP11", 0),  # í…Œë„¤ì‹œ ì¶”ê°€
+      ("Lvr12_00", "LVR12", 0), # í…Œë„¤ì‹œ ì¶”ê°€
+      ("Lvr12_01", "LVR12", 0), # í…Œë„¤ì‹œ ì¶”ê°€
+      ("Lvr12_02", "LVR12", 0), # í…Œë„¤ì‹œ ì¶”ê°€
+      ("Lvr12_03", "LVR12", 0), # í…Œë„¤ì‹œ ì¶”ê°€
+      ("Lvr12_04", "LVR12", 0), # í…Œë„¤ì‹œ ì¶”ê°€
+      ("Lvr12_05", "LVR12", 0), # í…Œë„¤ì‹œ ì¶”ê°€
+      ("Lvr12_06", "LVR12", 0), # í…Œë„¤ì‹œ ì¶”ê°€
+      ("Lvr12_07", "LVR12", 0), # í…Œë„¤ì‹œ ì¶”ê°€
+      ("CF_Lvr_CGear", "LVR11", 0), # í…Œë„¤ì‹œ ì¶”ê°€
 
       ("CF_Lvr_GearInf", "LVR11", 0),        # Transmission Gear (0 = N or P, 1-8 = Fwd, 14 = Rev)
 
@@ -365,7 +365,7 @@ class CarState(CarStateBase):
     ]
 
     checks = [
-      # address, frequency DBCÁ¤ÀÇµÈ °Í¿¡ ÀÇÇÑ ÀÛµ¿
+      # address, frequency DBCì •ì˜ëœ ê²ƒì— ì˜í•œ ì‘ë™
       ("TCS13", 40),  # 0d916 0x394
       ("TCS15", 10),  # 0d1287 0x507
       ("CLU11", 40),  # 0d1265 0x4F1
@@ -394,7 +394,7 @@ class CarState(CarStateBase):
         ("CR_Mdps_OutTq", "MDPS12", 0)
       ]
       checks += [
-        ("MDPS12", 40) # GDS ÀåºñÀÇ Á¡°Ë¿¡¼­ Á¡°Ë½Ã°£¿¡¼­ ÀÛµ¿½Ã 40ms½Ã°£À¸·Î °Ë»çÇÑ´Ù¸¦ ÂüÁ¶ÇÔ..
+        ("MDPS12", 40) # GDS ì¥ë¹„ì˜ ì ê²€ì—ì„œ ì ê²€ì‹œê°„ì—ì„œ ì‘ë™ì‹œ 40msì‹œê°„ìœ¼ë¡œ ê²€ì‚¬í•œë‹¤ë¥¼ ì°¸ì¡°í•¨..
       ]
     if CP.sasBus == 0:
       signals += [
