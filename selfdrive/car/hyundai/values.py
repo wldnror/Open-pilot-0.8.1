@@ -517,7 +517,7 @@ FEATURES = {
 
 DBC = {
   # genesis
-  CAR.GENESIS: dbc_dict('hyundai_genesis', None),
+  CAR.GENESIS: dbc_dict('hyundai_kia_generic', None),
   CAR.GENESIS_G70: dbc_dict('hyundai_kia_generic', None),
   CAR.GENESIS_G80: dbc_dict('hyundai_genesis', None),
   CAR.GENESIS_G90: dbc_dict('hyundai_genesis', None),
