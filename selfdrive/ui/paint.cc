@@ -974,7 +974,7 @@ static void ui_draw_vision_event(UIState *s) {
 
 static void ui_draw_vision_face(UIState *s) {
   const int face_size = 96;
-  const int x_gain = 220;
+  const int x_gain = 210;
   const int y_gain = 0;
   const int face_x = (s->scene.viz_rect.x + face_size + (bdr_s * 2));
   const int face_y = (s->scene.viz_rect.bottom() - footer_h + ((footer_h - face_size) / 2));
@@ -985,7 +985,7 @@ static void ui_draw_driver_view(UIState *s) {
   const UIScene *scene = &s->scene;
   s->scene.uilayout_sidebarcollapsed = true;
   const Rect &viz_rect = s->scene.viz_rect;
-  const int x_gain = 220;
+  const int x_gain = 210;
   const int y_gain = 0;
   const int ff_xoffset = 32;
   const int frame_x = viz_rect.x;
