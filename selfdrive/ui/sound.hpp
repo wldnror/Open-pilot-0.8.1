@@ -14,7 +14,15 @@ static std::map<AudibleAlert, std::pair<const char *, int>> sound_map {
   {AudibleAlert::CHIME_WARNING_REPEAT, {"../assets/sounds/warning_repeat.wav", -1}},
   {AudibleAlert::CHIME_ERROR, {"../assets/sounds/error.wav", 0}},
   {AudibleAlert::CHIME_PROMPT, {"../assets/sounds/error.wav", 0}},
-  {AudibleAlert::CHIME_SLOWING_DOWN_SPEED, {"../assets/sounds/slowing_down_speed.wav", 0}}
+  {AudibleAlert::CHIME_SLOWING_DOWN_SPEED, {"../assets/sounds/slowing_down_speed.wav", 0}},
+  {AudibleAlert::CHIME_GEARD, {"../assets/sounds/geard.wav", 0}},
+  {AudibleAlert::CHIME_ALCA, {"../assets/sounds/alca.wav", 1}},
+  {AudibleAlert::CHIME_SEATBELT, {"../assets/sounds/seatbelt.wav", 0}},
+  {AudibleAlert::CHIME_VISION, {"../assets/sounds/vision.wav", 0}},
+  {AudibleAlert::CHIME_DISTRACTED, {"../assets/sounds/distracted.wav", 1}},
+  {AudibleAlert::CHIME_CALIBRATION1, {"../assets/sounds/calibration1.wav", 1}},
+  {AudibleAlert::CHIME_CALIBRATION2, {"../assets/sounds/calibration2.wav", 1}}
+  
 };
 
 class Sound {
