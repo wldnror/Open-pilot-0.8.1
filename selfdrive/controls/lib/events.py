@@ -600,7 +600,8 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.seatbeltNotLatched: {
     ET.SOFT_DISABLE: SoftDisableAlert("안전벨트를 착용해주세요"),
-    ET.NO_ENTRY: NoEntryAlert("안전벨트를 착용해주세요"),
+    ET.NO_ENTRY: NoEntryAlert("안전벨트를 착용해주세요",
+                              audible_alert=AudibleAlert.chimeSeatbelt, duration_sound=3.),
   },
 
   EventName.espDisabled: {
