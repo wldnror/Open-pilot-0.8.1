@@ -757,38 +757,38 @@ static void ui_draw_debug(UIState *s)
   ui_print(s, ui_viz_rx_center + x_gain, ui_viz_ry+850 + y_gain, "%.2f                       %.2f                       %.2f", scene.pathPlan.lPoly, scene.pathPlan.laneWidth, abs(scene.pathPlan.rPoly));
 }
 
-static void bb_ui_draw_debug(UIState *s)
-{
-    const UIScene *scene = &s->scene;
-    char str[1024];
-    char strGear[32]; /*기어단수표시 by tenesi*/
+//static void bb_ui_draw_debug(UIState *s)
+//{
+//    const UIScene *scene = &s->scene;
+//    char str[1024];
+//    char strGear[32]; /*기어단수표시 by tenesi*/
 
-    cereal::CarControl::SccSmoother::Reader scc_smoother = scene->car_control.getSccSmoother();
-    std::string sccLogMessage = std::string(scc_smoother.getLogMessage());
-    snprintf(strGear, sizeof(strGear), "%.0f", s->scene.currentGear); /*기어단수표시 by tenesi*/
+//    cereal::CarControl::SccSmoother::Reader scc_smoother = scene->car_control.getSccSmoother();
+//    std::string sccLogMessage = std::string(scc_smoother.getLogMessage());
+//    snprintf(strGear, sizeof(strGear), "%.0f", s->scene.currentGear); /*기어단수표시 by tenesi*/
 
-    snprintf(str, sizeof(str), "SR: %.2f, SRC: %.3f, SAD: %.3f%s%s", scene->path_plan.getSteerRatio(),
+//    snprintf(str, sizeof(str), "SR: %.2f, SRC: %.3f, SAD: %.3f%s%s", scene->path_plan.getSteerRatio(),
                                                         scene->path_plan.getSteerRateCost(),
                                                         scene->path_plan.getSteerActuatorDelay(),
                                                         sccLogMessage.size() > 0 ? ", " : "",
                                                         sccLogMessage.c_str()
                                                         );
 
-    int x = scene->viz_rect.x + (bdr_s * 2);
-    int y = scene->viz_rect.bottom() - 24;
+//    int x = scene->viz_rect.x + (bdr_s * 2);
+//    int y = scene->viz_rect.bottom() - 24;
 
-    nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
+//    nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
 
-    ui_draw_text(s->vg, x, y, str, 20 * 2.5, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
+//    ui_draw_text(s->vg, x, y, str, 20 * 2.5, COLOR_WHITE_ALPHA(200), s->font_sans_semibold);
 
 /*기어단수표시 by tenesi*/
-    if ((s->scene.currentGear < 9) && (s->scene.currentGear !=0)) {
-      ui_draw_text(s->vg, x+37, y-130., strGear, 25 * 10., COLOR_RED, s->font_sans_semibold);
-    } else if (s->scene.currentGear == 14 ) {
-      ui_draw_text(s->vg, x+37, y-130., "R", 25 * 10., COLOR_RED, s->font_sans_semibold);
-    } else {
-      ui_draw_text(s->vg, x+37, y-130., "", 25 * 10., COLOR_RED, s->font_sans_semibold);
-    }
+//    if ((s->scene.currentGear < 9) && (s->scene.currentGear !=0)) {
+//      ui_draw_text(s->vg, x+37, y-130., strGear, 25 * 10., COLOR_RED, s->font_sans_semibold);
+//    } else if (s->scene.currentGear == 14 ) {
+//      ui_draw_text(s->vg, x+37, y-130., "R", 25 * 10., COLOR_RED, s->font_sans_semibold);
+//    } else {
+//      ui_draw_text(s->vg, x+37, y-130., "", 25 * 10., COLOR_RED, s->font_sans_semibold);
+//    }
     /*
 
     int w = 184;
@@ -974,7 +974,7 @@ static void ui_draw_vision_event(UIState *s) {
 
 static void ui_draw_vision_face(UIState *s) {
   const int face_size = 96;
-  const int x_gain = 210;
+  const int x_gain = 0;
   const int y_gain = 0;
   const int face_x = (s->scene.viz_rect.x + face_size + (bdr_s * 2));
   const int face_y = (s->scene.viz_rect.bottom() - footer_h + ((footer_h - face_size) / 2));
@@ -985,7 +985,7 @@ static void ui_draw_driver_view(UIState *s) {
   const UIScene *scene = &s->scene;
   s->scene.uilayout_sidebarcollapsed = true;
   const Rect &viz_rect = s->scene.viz_rect;
-  const int x_gain = 210;
+  const int x_gain = 0;
   const int y_gain = 0;
   const int ff_xoffset = 32;
   const int frame_x = viz_rect.x;
